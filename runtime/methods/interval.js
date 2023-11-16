@@ -17,7 +17,7 @@
  *  }
  * }}
  */
-const app = global.vscode_glasstheme_plugin;
+const app = global.vscode_vibrancy_plugin;
 let backgroundColorTimer;
 module.exports = (window) => ({
 	install() {

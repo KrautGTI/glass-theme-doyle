@@ -75,7 +75,7 @@ async function promptRestart() {
 
 async function checkColorTheme() {
   // Get the current color theme and target theme from configuration files
-  const currentTheme = getCurrentTheme(vscode.workspace.getConfiguration("vscode_glasstheme"));
+  const currentTheme = getCurrentTheme(vscode.workspace.getConfiguration("vscode_vibrancy"));
 
   // if theme is "Custom theme (use imports)", skip the check
   if (currentTheme === 'Custom theme (use imports)') {
@@ -153,7 +153,7 @@ function lockFirstload() {
 }
 
 function activate(context) {
-  console.log('vscode-glasstheme is active!');
+  console.log('vscode-vibrancy is active!');
 
   var appDir = path.dirname(require.main.filename);
 
@@ -162,7 +162,7 @@ function activate(context) {
   var ElectronJSFile = appDir + '/vs/code/electron-main/main.js';
 
   var runtimeVersion = 'v6';
-  var runtimeDir = appDir + '/vscode-glasstheme-runtime-' + runtimeVersion;
+  var runtimeDir = appDir + '/vscode-vibrancy-runtime-' + runtimeVersion;
 
   async function installRuntime() {
     // if runtimeDir exists, recurse through it and delete all files
@@ -216,7 +216,7 @@ function activate(context) {
   }
 
   async function installJS() {
-    const config = vscode.workspace.getConfiguration("vscode_glasstheme");
+    const config = vscode.workspace.getConfiguration("vscode_vibrancy");
     const currentTheme = getCurrentTheme(config);
     const themeConfig = require(path.resolve(__dirname, themeConfigPaths[currentTheme]));
     const themeCSS = await fs.readFile(path.join(__dirname, themeStylePaths[currentTheme]), 'utf-8');
@@ -254,14 +254,14 @@ function activate(context) {
 
     const base = __filename;
 
-    const newJS = JS.replace(/\n\/\* !! VSCODE-glasstheme-START !! \*\/[\s\S]*?\/\* !! VSCODE-glasstheme-END !! \*\//, '')
-      + '\n/* !! VSCODE-glasstheme-START !! */\n;(function(){\n'
+    const newJS = JS.replace(/\n\/\* !! VSCODE-VIBRANCY-START !! \*\/[\s\S]*?\/\* !! VSCODE-VIBRANCY-END !! \*\//, '')
+      + '\n/* !! VSCODE-VIBRANCY-START !! */\n;(function(){\n'
       + `if (!require(\'fs\').existsSync(${JSON.stringify(base)})) return;\n`
-      + `global.vscode_glasstheme_plugin = ${JSON.stringify(injectData)}; try{ require(${JSON.stringify(runtimeDir)}); } catch (err) {console.error(err)}\n`
-      + '})()\n/* !! VSCODE-glasstheme-END !! */';
+      + `global.vscode_vibrancy_plugin = ${JSON.stringify(injectData)}; try{ require(${JSON.stringify(runtimeDir)}); } catch (err) {console.error(err)}\n`
+      + '})()\n/* !! VSCODE-VIBRANCY-END !! */';
     await fs.writeFile(JSFile, newJS, 'utf-8');
-
-    // add visualEffectState option to enable glasstheme while VSCode is not in focus (macOS only)
+    
+    // add visualEffectState option to enable vibrancy while VSCode is not in focus (macOS only)
     const ElectronJS = await fs.readFile(ElectronJSFile, 'utf-8');
     if (!ElectronJS.includes('visualEffectState')) {
       const newElectronJS = ElectronJS.replace(/experimentalDarkMode/g, 'visualEffectState:"active",experimentalDarkMode');
@@ -274,14 +274,14 @@ function activate(context) {
 
     const metaTagRegex = /<meta\s+http-equiv="Content-Security-Policy"\s+content="([\s\S]+?)">/;
     const trustedTypesRegex = /(trusted-types)(\r\n|\r|\n)/;
-
+  
     const metaTagMatch = HTML.match(metaTagRegex);
-
+  
     if (metaTagMatch) {
       const currentContent = metaTagMatch[0];
 
-      const newContent = currentContent.replace(trustedTypesRegex, "$1 Vscodeglasstheme\n");
-
+      const newContent = currentContent.replace(trustedTypesRegex, "$1 VscodeVibrancy\n");
+  
       newHTML = HTML.replace(metaTagRegex, newContent);
     }
 
@@ -296,10 +296,10 @@ function activate(context) {
 
   async function uninstallJS() {
     const JS = await fs.readFile(JSFile, 'utf-8');
-    const needClean = /\n\/\* !! VSCODE-glasstheme-START !! \*\/[\s\S]*?\/\* !! VSCODE-glasstheme-END !! \*\//.test(JS);
+    const needClean = /\n\/\* !! VSCODE-VIBRANCY-START !! \*\/[\s\S]*?\/\* !! VSCODE-VIBRANCY-END !! \*\//.test(JS);
     if (needClean) {
       const newJS = JS
-        .replace(/\n\/\* !! VSCODE-glasstheme-START !! \*\/[\s\S]*?\/\* !! VSCODE-glasstheme-END !! \*\//, '')
+        .replace(/\n\/\* !! VSCODE-VIBRANCY-START !! \*\/[\s\S]*?\/\* !! VSCODE-VIBRANCY-END !! \*\//, '')
       await fs.writeFile(JSFile, newJS, 'utf-8');
     }
     // remove visualEffectState option
@@ -312,9 +312,9 @@ function activate(context) {
 
   async function uninstallHTML() {
     const HTML = await fs.readFile(HTMLFile, 'utf-8');
-    const needClean = /trusted-types Vscodeglasstheme/.test(HTML);
+    const needClean = /trusted-types VscodeVibrancy/.test(HTML);
     if (needClean) {
-      const newHTML = HTML.replace(/trusted-types Vscodeglasstheme(\r\n|\r|\n)/, "trusted-types$1");
+      const newHTML = HTML.replace(/trusted-types VscodeVibrancy(\r\n|\r|\n)/, "trusted-types$1");
       await fs.writeFile(HTMLFile, newHTML, 'utf-8');
     }
   }
@@ -394,22 +394,22 @@ function activate(context) {
     await Install();
   }
 
-  var installglasstheme = vscode.commands.registerCommand('extension.installglasstheme', async () => {
+  var installVibrancy = vscode.commands.registerCommand('extension.installVibrancy', async () => {
     await Install();
     enabledRestart();
   });
-  var uninstallglasstheme = vscode.commands.registerCommand('extension.uninstallglasstheme', async () => {
+  var uninstallVibrancy = vscode.commands.registerCommand('extension.uninstallVibrancy', async () => {
     await Uninstall()
     disabledRestart();
   });
-  var updateglasstheme = vscode.commands.registerCommand('extension.updateglasstheme', async () => {
+  var updateVibrancy = vscode.commands.registerCommand('extension.updateVibrancy', async () => {
     await Update();
     enabledRestart();
   });
 
-  context.subscriptions.push(installglasstheme);
-  context.subscriptions.push(uninstallglasstheme);
-  context.subscriptions.push(updateglasstheme);
+  context.subscriptions.push(installVibrancy);
+  context.subscriptions.push(uninstallVibrancy);
+  context.subscriptions.push(updateVibrancy);
 
   if (isFirstload()) {
     vscode.window.showInformationMessage(localize('messages.firstload'), { title: localize('messages.installIde') })
@@ -423,17 +423,17 @@ function activate(context) {
     lockFirstload();
   }
 
-  var lastConfig = vscode.workspace.getConfiguration("vscode_glasstheme");
+  var lastConfig = vscode.workspace.getConfiguration("vscode_vibrancy");
 
   vscode.workspace.onDidChangeConfiguration(() => {
-    newConfig = vscode.workspace.getConfiguration("vscode_glasstheme");
+    newConfig = vscode.workspace.getConfiguration("vscode_vibrancy");
     if (!deepEqual(lastConfig, newConfig)) {
       lastConfig = newConfig;
       vscode.window.showInformationMessage(localize('messages.configupdate'), { title: localize('messages.reloadIde') })
         .then(async (msg) => {
           if (msg) {
             await Update();
-            if (newConfig.theme !== vscode.workspace.getConfiguration("vscode_glasstheme")) {
+            if (newConfig.theme !== vscode.workspace.getConfiguration("vscode_vibrancy")) {
               await checkColorTheme();
             }
             enabledRestart();

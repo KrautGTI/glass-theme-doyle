@@ -3,4 +3,4 @@
 export builddir_name ?= ./build/.
 .PHONY: all
 all:
-	$(MAKE) glasstheme displayconfig
+	$(MAKE) vibrancy displayconfig
