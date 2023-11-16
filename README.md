@@ -55,14 +55,6 @@ Remember to re-enable Vibrancy after every VS Code update.
 - **vscode_vibrancy.preventFlash**: Toggle new method to prevent window flashing (default: true).
 - **vscode_vibrancy.refreshInterval**: Set refresh interval for transparency update (1 to 1000 ms).
 
-## Vibrancy Themes
-
-Select from a variety of Vibrancy themes, including Default Dark, Tokyo Night Storm, Solarized Dark+, and more.
-
-![Themes Screenshot Grid](./themes-screenshot-grid.png)
-
-Contribute or explore more themes [here](https://github.com/krautgti/glass-theme-doyle/tree/master/themes).
-
 ## FAQs
 
 - **Uninstalling**: Use "Disable Vibrancy" command and restart VS Code.
