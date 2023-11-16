@@ -1,13 +1,17 @@
 {
   "name": "glass-theme-doyle",
-  "displayName": "Glass Theme Doyle",
-  "description": "glasstheme Effect for Visual Studio Code",
+  "displayName": "Glass Theme MacOS",
+  "description": "Glassmorphism theme Effect for Visual Studio Code",
   "version": "1.1.23",
-  "publisher": "Doyle",
+  "publisher": "KrautGTI",
   "author": {
     "email": "tylerjamesdoyle@gmail.com",
     "name": "Doyle",
     "url": "https://tylerjdoyle.myportfolio.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KrautGTI/glass-theme-doyle"
   },
   "engines": {
     "vscode": "^1.57.0"
