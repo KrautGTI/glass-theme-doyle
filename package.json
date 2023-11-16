@@ -1,17 +1,13 @@
 {
   "name": "glass-theme-doyle",
-  "displayName": "Glass Theme MacOS",
-  "description": "Glassmorphism theme Effect for Visual Studio Code",
-  "version": "2.1.0",
+  "displayName": "Glassmorphism Theme MacOS",
+  "description": "Glassmorphism Effect for Visual Studio Code",
+  "version": "2.2.0",
   "publisher": "KrautGTI",
   "author": {
     "email": "tylerjamesdoyle@gmail.com",
     "name": "Doyle",
     "url": "https://tylerjdoyle.myportfolio.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/KrautGTI/glass-theme-doyle"
   },
   "engines": {
     "vscode": "^1.57.0"
@@ -20,6 +16,13 @@
     "Other",
     "Themes"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krautgti/glass-theme-doyle"
+  },
+  "bugs": {
+    "url": "https://github.com/krautgti/glass-theme-doyle/issues"
+  },
   "preview": false,
   "icon": "images/logo.png",
   "extensionKind": [
@@ -35,22 +38,22 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.installglasstheme",
-        "title": "%extension.installglasstheme.title%"
+        "command": "extension.installVibrancy",
+        "title": "%extension.installVibrancy.title%"
       },
       {
-        "command": "extension.uninstallglasstheme",
-        "title": "%extension.uninstallglasstheme.title%"
+        "command": "extension.uninstallVibrancy",
+        "title": "%extension.uninstallVibrancy.title%"
       },
       {
-        "command": "extension.updateglasstheme",
-        "title": "%extension.updateglasstheme.title%"
+        "command": "extension.updateVibrancy",
+        "title": "%extension.updateVibrancy.title%"
       }
     ],
     "configuration": {
-      "title": "glasstheme Effect",
+      "title": "Vibrancy Effect",
       "properties": {
-        "vscode_glasstheme.type": {
+        "vscode_vibrancy.type": {
           "description": "%configuration.type.description%",
           "type": "string",
           "default": "auto",
@@ -83,14 +86,14 @@
             "%configuration.type.ultra-dark.description%"
           ]
         },
-        "vscode_glasstheme.opacity": {
+        "vscode_vibrancy.opacity": {
           "description": "%configuration.opacity.description%",
           "type": "number",
           "default": "-1",
           "minimum": "-1",
           "maximum": "1"
         },
-        "vscode_glasstheme.theme": {
+        "vscode_vibrancy.theme": {
           "description": "%configuration.theme.description%",
           "type": "string",
           "default": "Default Dark",
@@ -108,19 +111,19 @@
             "Custom theme (use imports)"
           ]
         },
-        "vscode_glasstheme.imports": {
+        "vscode_vibrancy.imports": {
           "description": "%configuration.imports.description%",
           "type": "array",
           "default": [
             "/path/to/file"
           ]
         },
-        "vscode_glasstheme.refreshInterval": {
+        "vscode_vibrancy.refreshInterval": {
           "description": "%configuration.refreshInterval.description%",
           "type": "number",
           "default": "10"
         },
-        "vscode_glasstheme.preventFlash": {
+        "vscode_vibrancy.preventFlash": {
           "description": "%configuration.preventFlash.description%",
           "type": "boolean",
           "default": true

@@ -1,11 +1,11 @@
 {
   "targets": [
     {
-      "target_name": "glasstheme",
+      "target_name": "vibrancy",
       "conditions":[
         ["OS=='win'", {
           "sources": [
-            "native/glasstheme.cc"
+            "native/vibrancy.cc"
           ]
         }]
       ],

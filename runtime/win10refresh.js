@@ -32,7 +32,7 @@ function isInSnapZone() {
 
 /**
  * Unfortunately, we have to re-implement moving and resizing.
- * Enabling glasstheme slows down the window's event handling loop to the
+ * Enabling vibrancy slows down the window's event handling loop to the
  * point building a mouse event backlog. If you just handle these events
  * in the backlog without taking the time difference into consideration,
  * you end up with visible movement lag.
@@ -117,7 +117,7 @@ module.exports = function win10refresh(win, maximumRefreshRate) {
 		}
 	}
 
-	// https://github.com/illixion/glass-theme-doyle/issues/38#issuecomment-1320238352
+	// https://github.com/krautgti/glass-theme-doyle/issues/38#issuecomment-1320238352
 	// win.on('will-move', (e, newBounds) => {
 	// 	if (win.__electron_acrylic_window__.opacityInterval) return
 	// 	// We get a _lot_ of duplicate bounds sent to us in this event.

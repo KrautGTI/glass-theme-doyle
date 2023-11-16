@@ -326,8 +326,8 @@ ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
 endif
 ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
     $(findstring $(join ^,$(prefix)),\
-                 $(join ^,glasstheme.target.mk)))),)
-  include glasstheme.target.mk
+                 $(join ^,vibrancy.target.mk)))),)
+  include vibrancy.target.mk
 endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@

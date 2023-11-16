@@ -50,13 +50,13 @@
     "configuration.imports.description": {
       "type": "string"
     },
-    "extension.installglasstheme.title": {
+    "extension.installVibrancy.title": {
       "type": "string"
     },
-    "extension.uninstallglasstheme.title": {
+    "extension.uninstallVibrancy.title": {
       "type": "string"
     },
-    "extension.updateglasstheme.title": {
+    "extension.updateVibrancy.title": {
       "type": "string"
     },
     "messages.firstload": {
@@ -119,9 +119,9 @@
     "configuration.opacity.description",
     "configuration.theme.description",
     "configuration.imports.description",
-    "extension.installglasstheme.title",
-    "extension.uninstallglasstheme.title",
-    "extension.updateglasstheme.title",
+    "extension.installVibrancy.title",
+    "extension.uninstallVibrancy.title",
+    "extension.updateVibrancy.title",
     "messages.firstload",
     "messages.configupdate",
     "messages.enabled",

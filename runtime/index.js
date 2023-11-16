@@ -23,7 +23,7 @@ const transparencyMethods = require('./methods');
  *  }
  * }}
  */
-const app = global.vscode_glasstheme_plugin;
+const app = global.vscode_vibrancy_plugin;
 // @ts-check
 
 const macosType = [
@@ -79,8 +79,8 @@ electron.app.on('browser-window-created', (_, window) => {
   const backgroundRGB = hexToRgb(app.theme.background) || { r: 0, g: 0, b: 0 };
 
   if (app.os === 'win10') {
-    const bindings = require('./glasstheme.js');
-    bindings.setglasstheme(
+    const bindings = require('./vibrancy.js');
+    bindings.setVibrancy(
       window.getNativeWindowHandle().readInt32LE(0),
       1,
       backgroundRGB.r,
@@ -131,7 +131,7 @@ electron.app.on('browser-window-created', (_, window) => {
     effects.install();
 
     if (app.os === 'macos') {
-      window.setglasstheme(type);
+      window.setVibrancy(type);
 
       // hack
       const width = window.getBounds().width;
@@ -149,20 +149,20 @@ electron.app.on('browser-window-created', (_, window) => {
 
 function injectHTML(window) {
   window.webContents.executeJavaScript(`(function(){
-    const vscodeglassthemeTTP = window.trustedTypes.createPolicy("Vscodeglasstheme", { createHTML (v) { return v; }});
+    const vscodeVibrancyTTP = window.trustedTypes.createPolicy("VscodeVibrancy", { createHTML (v) { return v; }});
 
-    document.getElementById("vscode-glasstheme-style")?.remove();
+    document.getElementById("vscode-vibrancy-style")?.remove();
     const styleElement = document.createElement("div");
-    styleElement.id = "vscode-glasstheme-style";
-    styleElement.innerHTML = vscodeglassthemeTTP.createHTML(${JSON.stringify(
+    styleElement.id = "vscode-vibrancy-style";
+    styleElement.innerHTML = vscodeVibrancyTTP.createHTML(${JSON.stringify(
     styleHTML()
   )});
     document.body.appendChild(styleElement);
 
-    document.getElementById("vscode-glasstheme-script")?.remove();
+    document.getElementById("vscode-vibrancy-script")?.remove();
     const scriptElement = document.createElement("div");
-    scriptElement.id = "vscode-glasstheme-script";
-    scriptElement.innerHTML = vscodeglassthemeTTP.createHTML(${JSON.stringify(
+    scriptElement.id = "vscode-vibrancy-script";
+    scriptElement.innerHTML = vscodeVibrancyTTP.createHTML(${JSON.stringify(
     scriptHTML()
   )});
     document.body.appendChild(scriptElement);
