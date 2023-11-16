@@ -1,0 +1,138 @@
+{
+  "name": "glass-theme-doyle",
+  "displayName": "Glass Theme Doyle",
+  "description": "glasstheme Effect for Visual Studio Code",
+  "version": "1.1.23",
+  "publisher": "Doyle",
+  "author": {
+    "email": "tylerjamesdoyle@gmail.com",
+    "name": "Doyle",
+    "url": "https://tylerjdoyle.myportfolio.com/"
+  },
+  "engines": {
+    "vscode": "^1.57.0"
+  },
+  "categories": [
+    "Other",
+    "Themes"
+  ],
+  "preview": false,
+  "icon": "images/logo.png",
+  "extensionKind": [
+    "ui"
+  ],
+  "galleryBanner": {
+    "color": "#EEEEEE"
+  },
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./extension/index.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.installglasstheme",
+        "title": "%extension.installglasstheme.title%"
+      },
+      {
+        "command": "extension.uninstallglasstheme",
+        "title": "%extension.uninstallglasstheme.title%"
+      },
+      {
+        "command": "extension.updateglasstheme",
+        "title": "%extension.updateglasstheme.title%"
+      }
+    ],
+    "configuration": {
+      "title": "glasstheme Effect",
+      "properties": {
+        "vscode_glasstheme.type": {
+          "description": "%configuration.type.description%",
+          "type": "string",
+          "default": "auto",
+          "enum": [
+            "auto",
+            "acrylic",
+            "appearance-based",
+            "light",
+            "dark",
+            "titlebar",
+            "selection",
+            "menu",
+            "popover",
+            "sidebar",
+            "medium-light",
+            "ultra-dark"
+          ],
+          "enumDescriptions": [
+            "%configuration.type.auto.description%",
+            "%configuration.type.acrylic.description%",
+            "%configuration.type.appearance-based.description%",
+            "%configuration.type.light.description%",
+            "%configuration.type.dark.description%",
+            "%configuration.type.titlebar.description%",
+            "%configuration.type.selection.description%",
+            "%configuration.type.menu.description%",
+            "%configuration.type.popover.description%",
+            "%configuration.type.sidebar.description%",
+            "%configuration.type.medium-light.description%",
+            "%configuration.type.ultra-dark.description%"
+          ]
+        },
+        "vscode_glasstheme.opacity": {
+          "description": "%configuration.opacity.description%",
+          "type": "number",
+          "default": "-1",
+          "minimum": "-1",
+          "maximum": "1"
+        },
+        "vscode_glasstheme.theme": {
+          "description": "%configuration.theme.description%",
+          "type": "string",
+          "default": "Default Dark",
+          "enum": [
+            "Default Dark",
+            "Dark (Only Subbar)",
+            "Default Light",
+            "Light (Only Subbar)",
+            "Tokyo Night Storm",
+            "Tokyo Night Storm (Outer)",
+            "Noir et blanc",
+            "Dark (Exclude Tab Line)",
+            "Solarized Dark+",
+            "Catppuccin Mocha",
+            "Custom theme (use imports)"
+          ]
+        },
+        "vscode_glasstheme.imports": {
+          "description": "%configuration.imports.description%",
+          "type": "array",
+          "default": [
+            "/path/to/file"
+          ]
+        },
+        "vscode_glasstheme.refreshInterval": {
+          "description": "%configuration.refreshInterval.description%",
+          "type": "number",
+          "default": "10"
+        },
+        "vscode_glasstheme.preventFlash": {
+          "description": "%configuration.preventFlash.description%",
+          "type": "boolean",
+          "default": true
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build-win10": "node-gyp rebuild"
+  },
+  "dependencies": {
+    "fs-extra": "^10.1.0",
+    "mz": "^2.7.0"
+  },
+  "devDependencies": {
+    "node-addon-api": "^5.0.0",
+    "node-gyp": "^9.1.0"
+  }
+}

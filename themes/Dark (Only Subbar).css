@@ -1,0 +1,20 @@
+.monaco-workbench,
+.monaco-workbench .sidebar,
+.monaco-workbench .activitybar,
+.monaco-workbench .titlebar,
+.monaco-workbench .monaco-list-rows,
+body {
+  background: transparent !important;
+}
+
+.monaco-workbench.fullscreen {
+	background-color: #202020 !important;
+}
+
+
+.notebookOverlay.notebook-editor,
+.cell-statusbar-container,
+.margin-view-overlays,
+.monaco-list-row:hover:not(.selected):not(.focused) {
+  background-color: transparent !important;
+}
