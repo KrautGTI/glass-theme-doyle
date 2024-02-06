@@ -1,145 +1,164 @@
 {
-  "name": "glass-theme-doyle",
-  "displayName": "Glassmorphism Theme MacOS",
-  "description": "Glassmorphism Effect for Visual Studio Code",
-  "version": "2.4.0",
-  "publisher": "KrautGTI",
-  "author": {
-    "email": "tylerjamesdoyle@gmail.com",
-    "name": "Doyle",
-    "url": "https://tylerjdoyle.myportfolio.com/"
-  },
-  "engines": {
-    "vscode": "^1.57.0"
-  },
-  "categories": [
-    "Other",
-    "Themes"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/krautgti/glass-theme-doyle"
-  },
-  "bugs": {
-    "url": "https://github.com/krautgti/glass-theme-doyle/issues"
-  },
-  "preview": false,
-  "icon": "images/logo.png",
-  "extensionKind": [
-    "ui"
-  ],
-  "galleryBanner": {
-    "color": "#EEEEEE"
-  },
-  "activationEvents": [
-    "*"
-  ],
-  "main": "./extension/index.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "extension.installVibrancy",
-        "title": "%extension.installVibrancy.title%"
-      },
-      {
-        "command": "extension.uninstallVibrancy",
-        "title": "%extension.uninstallVibrancy.title%"
-      },
-      {
-        "command": "extension.updateVibrancy",
-        "title": "%extension.updateVibrancy.title%"
-      }
+    "name": "glass-theme-doyle",
+    "displayName": "Glassmorphism Theme MacOS",
+    "description": "Glassmorphism Effect for Visual Studio Code",
+    "version": "2.5.0",
+    "publisher": "KrautGTI",
+    "author": {
+        "email": "tylerjamesdoyle@gmail.com",
+        "name": "Doyle",
+        "url": "https://tylerjdoyle.myportfolio.com/"
+    },
+    "engines": {
+        "vscode": "^1.57.0"
+    },
+    "categories": [
+        "Other",
+        "Themes"
     ],
-    "configuration": {
-      "title": "Vibrancy Effect",
-      "properties": {
-        "vscode_vibrancy.type": {
-          "description": "%configuration.type.description%",
-          "type": "string",
-          "default": "auto",
-          "enum": [
-            "auto",
-            "acrylic",
-            "appearance-based",
-            "light",
-            "dark",
-            "titlebar",
-            "selection",
-            "menu",
-            "popover",
-            "sidebar",
-            "medium-light",
-            "ultra-dark"
-          ],
-          "enumDescriptions": [
-            "%configuration.type.auto.description%",
-            "%configuration.type.acrylic.description%",
-            "%configuration.type.appearance-based.description%",
-            "%configuration.type.light.description%",
-            "%configuration.type.dark.description%",
-            "%configuration.type.titlebar.description%",
-            "%configuration.type.selection.description%",
-            "%configuration.type.menu.description%",
-            "%configuration.type.popover.description%",
-            "%configuration.type.sidebar.description%",
-            "%configuration.type.medium-light.description%",
-            "%configuration.type.ultra-dark.description%"
-          ]
-        },
-        "vscode_vibrancy.opacity": {
-          "description": "%configuration.opacity.description%",
-          "type": "number",
-          "default": "-1",
-          "minimum": "-1",
-          "maximum": "1"
-        },
-        "vscode_vibrancy.theme": {
-          "description": "%configuration.theme.description%",
-          "type": "string",
-          "default": "Default Dark",
-          "enum": [
-            "Default Dark",
-            "Dark (Only Subbar)",
-            "Default Light",
-            "Light (Only Subbar)",
-            "Tokyo Night Storm",
-            "Tokyo Night Storm (Outer)",
-            "Noir et blanc",
-            "Dark (Exclude Tab Line)",
-            "Solarized Dark+",
-            "Catppuccin Mocha",
-            "Custom theme (use imports)"
-          ]
-        },
-        "vscode_vibrancy.imports": {
-          "description": "%configuration.imports.description%",
-          "type": "array",
-          "default": [
-            "/path/to/file"
-          ]
-        },
-        "vscode_vibrancy.refreshInterval": {
-          "description": "%configuration.refreshInterval.description%",
-          "type": "number",
-          "default": "10"
-        },
-        "vscode_vibrancy.preventFlash": {
-          "description": "%configuration.preventFlash.description%",
-          "type": "boolean",
-          "default": true
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/krautgti/glass-theme-doyle"
+    },
+    "bugs": {
+        "url": "https://github.com/krautgti/glass-theme-doyle/issues"
+    },
+    "preview": false,
+    "icon": "images/logo.png",
+    "extensionKind": [
+        "ui"
+    ],
+    "galleryBanner": {
+        "color": "#EEEEEE"
+    },
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./extension/index.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.installVibrancy",
+                "title": "%extension.installVibrancy.title%"
+            },
+            {
+                "command": "extension.uninstallVibrancy",
+                "title": "%extension.uninstallVibrancy.title%"
+            },
+            {
+                "command": "extension.updateVibrancy",
+                "title": "%extension.updateVibrancy.title%"
+            }
+        ],
+        "configuration": {
+            "title": "Vibrancy Effect",
+            "properties": {
+                "vscode_vibrancy.type": {
+                    "description": "%configuration.type.description%",
+                    "type": "string",
+                    "default": "auto",
+                    "enum": [
+                        "auto",
+                        "acrylic",
+                        "under-window",
+                        "fullscreen-ui",
+                        "titlebar",
+                        "selection",
+                        "menu",
+                        "popover",
+                        "sidebar",
+                        "content",
+                        "header",
+                        "hud",
+                        "sheet",
+                        "tooltip",
+                        "under-page",
+                        "window",
+                        "appearance-based",
+                        "dark",
+                        "ultra-dark",
+                        "light",
+                        "medium-light"
+                    ],
+                    "enumDescriptions": [
+                        "%configuration.type.auto.description%",
+                        "%configuration.type.acrylic.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only.description%",
+                        "%configuration.type.macos-only-legacy.description%",
+                        "%configuration.type.macos-only-legacy.description%",
+                        "%configuration.type.macos-only-legacy.description%",
+                        "%configuration.type.macos-only-legacy.description%",
+                        "%configuration.type.macos-only-legacy.description%"
+                    ]
+                },
+                "vscode_vibrancy.opacity": {
+                    "description": "%configuration.opacity.description%",
+                    "type": "number",
+                    "default": "-1",
+                    "minimum": "-1",
+                    "maximum": "1"
+                },
+                "vscode_vibrancy.theme": {
+                    "description": "%configuration.theme.description%",
+                    "type": "string",
+                    "default": "Default Dark",
+                    "enum": [
+                        "Default Dark",
+                        "Dark (Only Subbar)",
+                        "Default Light",
+                        "Light (Only Subbar)",
+                        "Tokyo Night Storm",
+                        "Tokyo Night Storm (Outer)",
+                        "Noir et blanc",
+                        "Dark (Exclude Tab Line)",
+                        "Solarized Dark+",
+                        "Catppuccin Mocha",
+                        "GitHub Dark Default",
+                        "Custom theme (use imports)"
+                    ]
+                },
+                "vscode_vibrancy.imports": {
+                    "description": "%configuration.imports.description%",
+                    "type": "array",
+                    "default": [
+                        "/path/to/file"
+                    ]
+                },
+                "vscode_vibrancy.refreshInterval": {
+                    "description": "%configuration.refreshInterval.description%",
+                    "type": "number",
+                    "default": "10"
+                },
+                "vscode_vibrancy.preventFlash": {
+                    "description": "%configuration.preventFlash.description%",
+                    "type": "boolean",
+                    "default": true
+                }
+            }
         }
-      }
+    },
+    "scripts": {
+        "build-win10": "node-gyp rebuild"
+    },
+    "dependencies": {
+        "fs-extra": "^10.1.0",
+        "mz": "^2.7.0"
+    },
+    "devDependencies": {
+        "node-addon-api": "^5.0.0",
+        "node-gyp": "^9.1.0"
     }
-  },
-  "scripts": {
-    "build-win10": "node-gyp rebuild"
-  },
-  "dependencies": {
-    "fs-extra": "^10.1.0",
-    "mz": "^2.7.0"
-  },
-  "devDependencies": {
-    "node-addon-api": "^5.0.0",
-    "node-gyp": "^9.1.0"
-  }
 }
