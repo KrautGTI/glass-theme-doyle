@@ -34,6 +34,14 @@ For removing the "[Unsupported]" title bar warning, use [Fix VSCode Checksums](h
 
 ## Supported Operating Systems
 
+**Windows Compatibility Issue:** Due to breaking changes in Electron 27 with VSCode 1.86 and newer, the Glassmorphism effect might not work as expected on Windows 10/11. We've identified a temporary fix, but it disables window snap and maximize features, which we find too inconvenient to roll out.
+
+**Recommended Solution:** For an uninterrupted Glassmorphism experience on Windows, please downgrade to VSCode version 1.85.2, available here: [https://update.code.visualstudio.com/1.85.2/win32-x64-user/stable](https://update.code.visualstudio.com/1.85.2/win32-x64-user/stable). We're working on a better fix and will update you as soon as possible.
+
+![Windows Working on on VSCode 1.85.2](./windows.png)
+![Windows Settings on VSCode 1.85.2](./windowsSettings.png)
+
+
 - Windows 11
 - Windows 10
 - macOS
@@ -63,3 +71,5 @@ Remember to re-enable Vibrancy after every VS Code update.
 - **EROFS Error on macOS**: Move VS Code to `/Applications` or use the provided terminal command.
 - **Windows 10 Lag Issues**: Read the [discussion](https://github.com/EYHN/vscode-vibrancy/discussions/80).
 - **Effect Not Working**: Ensure transparency effects are enabled in your OS settings.
+- **Windows Not Working**: Currently, For the best experience on Windows, downgrade to VSCode 1.85.2. Stay tuned for updates on a fix for newer versions!
+
