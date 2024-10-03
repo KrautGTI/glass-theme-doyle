@@ -1,6 +1,6 @@
-const { VerticalRefreshRateContext } = require('./displayconfig')
-const electron = require('electron')
-const process = require('process')
+import { VerticalRefreshRateContext } from './displayconfig.mjs';
+import electron from 'electron';
+import process from 'process';
 
 function sleep(duration) {
 	return new Promise(resolve => setTimeout(resolve, duration));
@@ -117,7 +117,7 @@ module.exports = function win10refresh(win, maximumRefreshRate) {
 		}
 	}
 
-	// https://github.com/krautgti/glass-theme-doyle/issues/38#issuecomment-1320238352
+	// https://github.com/illixion/vscode-vibrancy-continued/issues/38#issuecomment-1320238352
 	// win.on('will-move', (e, newBounds) => {
 	// 	if (win.__electron_acrylic_window__.opacityInterval) return
 	// 	// We get a _lot_ of duplicate bounds sent to us in this event.
