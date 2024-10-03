@@ -406,10 +406,10 @@
     "globalconfig": "/Users/doyle/.nvm/versions/node/v18.18.2/etc/npmrc",
     "userconfig": "/Users/doyle/.npmrc",
     "init_module": "/Users/doyle/.npm-init.js",
-    "npm_version": "10.2.4",
+    "npm_version": "10.4.0",
     "node_gyp": "/Users/doyle/.nvm/versions/node/v18.18.2/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js",
     "cache": "/Users/doyle/.npm",
-    "user_agent": "npm/10.2.4 node/v18.18.2 darwin x64 workspaces/false",
+    "user_agent": "npm/10.4.0 node/v18.18.2 darwin x64 workspaces/false",
     "prefix": "/Users/doyle/.nvm/versions/node/v18.18.2"
   }
 }
