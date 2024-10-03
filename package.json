@@ -63,7 +63,7 @@
       }
     ],
     "configuration": {
-      "title": "Vibrancy Effect",
+      "title": "Glassmorphism Theme",
       "properties": {
         "vscode_vibrancy.type": {
           "description": "%configuration.type.description%",
