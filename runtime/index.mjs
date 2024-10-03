@@ -1,8 +1,8 @@
-import electron from 'electron';
+import electron from "electron";
 /**
  * @type {(window) => Record<'interval' | 'overwrite', {install: () => void, uninstall: () => void>}
  */
-import transparencyMethods from './methods/index.mjs';
+import transparencyMethods from "./methods/index.mjs";
 
 /**
  * @type {{
@@ -26,29 +26,9 @@ import transparencyMethods from './methods/index.mjs';
 const app = global.vscode_vibrancy_plugin;
 // @ts-check
 
-const macosType = [
-  'under-window',
-  'fullscreen-ui',
-  'titlebar',
-  'selection',
-  'menu',
-  'popover',
-  'sidebar',
-  'content',
-  'header',
-  'hud',
-  'sheet',
-  'tooltip',
-  'under-page',
-  'window',
-  'appearance-based',
-  'dark',
-  'ultra-dark',
-  'light',
-  'medium-light'
-];
+const macosType = ["under-window", "fullscreen-ui", "titlebar", "selection", "menu", "popover", "sidebar", "content", "header", "hud", "sheet", "tooltip", "under-page", "window", "appearance-based", "dark", "ultra-dark", "light", "medium-light"];
 
-const windowsType = ['acrylic'];
+const windowsType = ["acrylic"];
 
 /**
  * @param {string} hex
@@ -58,24 +38,24 @@ function hexToRgb(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16),
-    }
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
     : null;
 }
 
-electron.app.on('browser-window-created', (_, window) => {
+electron.app.on("browser-window-created", (_, window) => {
   const methods = transparencyMethods(window);
-  const hackMethod = app.config.preventFlash ? 'overwrite' : 'interval';
+  const hackMethod = app.config.preventFlash ? "overwrite" : "interval";
   const effects = methods[hackMethod];
 
   var type = app.config.type;
-  if (type !== 'auto') {
-    if (app.os === 'win10' && !windowsType.includes(type)) type = 'auto';
-    if (app.os === 'macos' && !macosType.includes(type)) type = 'auto';
+  if (type !== "auto") {
+    if (app.os === "win10" && !windowsType.includes(type)) type = "auto";
+    if (app.os === "macos" && !macosType.includes(type)) type = "auto";
   }
-  if (type === 'auto') {
+  if (type === "auto") {
     type = app.theme.type[app.os];
   }
 
@@ -87,28 +67,16 @@ electron.app.on('browser-window-created', (_, window) => {
 
   const backgroundRGB = hexToRgb(app.theme.background) || { r: 0, g: 0, b: 0 };
 
-  if (app.os === 'win10') {
-    const bindings = require('./vibrancy.mjs');
-    bindings.setVibrancy(
-      window.getNativeWindowHandle().readInt32LE(0),
-      1,
-      backgroundRGB.r,
-      backgroundRGB.g,
-      backgroundRGB.b,
-      0
-    );
-    const win10refresh = require('./win10refresh.mjs');
+  if (app.os === "win10") {
+    const bindings = require("./vibrancy.mjs");
+    bindings.setVibrancy(window.getNativeWindowHandle().readInt32LE(0), 1, backgroundRGB.r, backgroundRGB.g, backgroundRGB.b, 0);
+    const win10refresh = require("./win10refresh.mjs");
     win10refresh(window, 60);
 
-    window.webContents.once('dom-ready', () => {
+    window.webContents.once("dom-ready", () => {
       const currentURL = window.webContents.getURL();
 
-      if (
-        !(
-          currentURL.includes('workbench.html') ||
-          currentURL.includes('workbench-monkey-patch.html')
-        )
-      ) {
+      if (!(currentURL.includes("workbench.html") || currentURL.includes("workbench.esm.html") || currentURL.includes("workbench-monkey-patch.html"))) {
         return;
       }
 
@@ -119,27 +87,22 @@ electron.app.on('browser-window-created', (_, window) => {
     });
   }
 
-  window.on('closed', () => {
+  window.on("closed", () => {
     effects.uninstall();
   });
 
-  window.webContents.on('dom-ready', () => {
+  window.webContents.on("dom-ready", () => {
     const currentURL = window.webContents.getURL();
 
-    if (
-      !(
-        currentURL.includes('workbench.html') ||
-        currentURL.includes('workbench-monkey-patch.html')
-      )
-    ) {
+    if (!(currentURL.includes("workbench.html") || currentURL.includes("workbench.esm.html") || currentURL.includes("workbench-monkey-patch.html"))) {
       return;
     }
 
-    window.setBackgroundColor('#00000000');
+    window.setBackgroundColor("#00000000");
 
     effects.install();
 
-    if (app.os === 'macos') {
+    if (app.os === "macos") {
       window.setVibrancy(type);
 
       // hack
@@ -163,31 +126,26 @@ function injectHTML(window) {
     document.getElementById("vscode-vibrancy-style")?.remove();
     const styleElement = document.createElement("div");
     styleElement.id = "vscode-vibrancy-style";
-    styleElement.innerHTML = vscodeVibrancyTTP.createHTML(${JSON.stringify(
-    styleHTML()
-  )});
+    styleElement.innerHTML = vscodeVibrancyTTP.createHTML(${JSON.stringify(styleHTML())});
     document.body.appendChild(styleElement);
 
     document.getElementById("vscode-vibrancy-script")?.remove();
     const scriptElement = document.createElement("div");
     scriptElement.id = "vscode-vibrancy-script";
-    scriptElement.innerHTML = vscodeVibrancyTTP.createHTML(${JSON.stringify(
-    scriptHTML()
-  )});
+    scriptElement.innerHTML = vscodeVibrancyTTP.createHTML(${JSON.stringify(scriptHTML())});
     document.body.appendChild(scriptElement);
   })();`);
 }
-
 
 function scriptHTML() {
   return app.imports.js;
 }
 
 function styleHTML() {
-  if (app.os === 'unknown') return '';
+  if (app.os === "unknown") return "";
 
   var type = app.config.type;
-  if (type === 'auto') {
+  if (type === "auto") {
     type = app.theme.type[app.os];
   }
 
@@ -211,5 +169,5 @@ function styleHTML() {
     app.imports.css,
   ];
 
-  return HTML.join('');
+  return HTML.join("");
 }
