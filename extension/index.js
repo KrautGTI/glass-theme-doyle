@@ -1,49 +1,50 @@
-var vscode = require("vscode");
-var fs = require("mz/fs");
-var fsExtra = require("fs-extra");
-var path = require("path");
+var vscode = require('vscode');
+var fs = require('mz/fs');
+var fsExtra = require('fs-extra');
+var path = require('path');
+var { pathToFileURL } = require('url')
 
 /**
  * @type {(info: string) => string}
  */
-const localize = require("./i18n");
+const localize = require('./i18n');
 
 /**
  * @type {'unknown' | 'win10' | 'macos'}
  */
-const os = require("./platform");
+const os = require('./platform');
 
 var themeStylePaths = {
-  "Default Dark": "../themes/Default Dark.css",
-  "Dark (Exclude Tab Line)": "../themes/Dark (Exclude Tab Line).css",
-  "Dark (Only Subbar)": "../themes/Dark (Only Subbar).css",
-  "Default Light": "../themes/Default Light.css",
-  "Light (Only Subbar)": "../themes/Light (Only Subbar).css",
-  "Tokyo Night Storm": "../themes/Tokyo Night Storm.css",
-  "Tokyo Night Storm (Outer)": "../themes/Tokyo Night Storm (Outer).css",
-  "Noir et blanc": "../themes/Noir et blanc.css",
-  "Solarized Dark+": "../themes/Solarized Dark+.css",
-  "Catppuccin Mocha": "../themes/Catppuccin Mocha.css",
-  "GitHub Dark Default": "../themes/GitHub Dark Default.css",
-  "Custom theme (use imports)": "../themes/Custom Theme.css",
-};
+  'Default Dark': '../themes/Default Dark.css',
+  'Dark (Exclude Tab Line)': '../themes/Dark (Exclude Tab Line).css',
+  'Dark (Only Subbar)': '../themes/Dark (Only Subbar).css',
+  'Default Light': '../themes/Default Light.css',
+  'Light (Only Subbar)': '../themes/Light (Only Subbar).css',
+  'Tokyo Night Storm': '../themes/Tokyo Night Storm.css',
+  'Tokyo Night Storm (Outer)': '../themes/Tokyo Night Storm (Outer).css',
+  'Noir et blanc': '../themes/Noir et blanc.css',
+  'Solarized Dark+': '../themes/Solarized Dark+.css',
+  'Catppuccin Mocha': '../themes/Catppuccin Mocha.css',
+  'GitHub Dark Default': '../themes/GitHub Dark Default.css',
+  'Custom theme (use imports)': '../themes/Custom Theme.css',
+}
 
 const themeConfigPaths = {
-  "Default Dark": "../themes/Default Dark.json",
-  "Dark (Exclude Tab Line)": "../themes/Dark (Exclude Tab Line).json",
-  "Dark (Only Subbar)": "../themes/Dark (Only Subbar).json",
-  "Default Light": "../themes/Default Light.json",
-  "Light (Only Subbar)": "../themes/Light (Only Subbar).json",
-  "Tokyo Night Storm": "../themes/Tokyo Night Storm.json",
-  "Tokyo Night Storm (Outer)": "../themes/Tokyo Night Storm (Outer).json",
-  "Noir et blanc": "../themes/Noir et blanc.json",
-  "Solarized Dark+": "../themes/Solarized Dark+.json",
-  "Catppuccin Mocha": "../themes/Catppuccin Mocha.json",
-  "GitHub Dark Default": "../themes/GitHub Dark Default.json",
-  "Custom theme (use imports)": "../themes/Custom Theme.json",
-};
+  'Default Dark': '../themes/Default Dark.json',
+  'Dark (Exclude Tab Line)': '../themes/Dark (Exclude Tab Line).json',
+  'Dark (Only Subbar)': '../themes/Dark (Only Subbar).json',
+  'Default Light': '../themes/Default Light.json',
+  'Light (Only Subbar)': '../themes/Light (Only Subbar).json',
+  'Tokyo Night Storm': '../themes/Tokyo Night Storm.json',
+  'Tokyo Night Storm (Outer)': '../themes/Tokyo Night Storm (Outer).json',
+  'Noir et blanc': '../themes/Noir et blanc.json',
+  'Solarized Dark+': '../themes/Solarized Dark+.json',
+  'Catppuccin Mocha': '../themes/Catppuccin Mocha.json',
+  'GitHub Dark Default': '../themes/GitHub Dark Default.json',
+  'Custom theme (use imports)': '../themes/Custom Theme.json',
+}
 
-var defaultTheme = "Default Dark";
+var defaultTheme = 'Default Dark';
 
 function getCurrentTheme(config) {
   return config.theme in themeStylePaths ? config.theme : defaultTheme;
@@ -63,8 +64,8 @@ function checkDarkLightMode(theme) {
   if (currentTheme === vscode.ColorThemeKind.Dark) {
     targetVibrancyTheme = preferredDarkColorTheme;
   } else if (currentTheme === vscode.ColorThemeKind.Light) {
-    targetVibrancyTheme = preferredLightColorTheme;
-  } else {
+    targetVibrancyTheme = preferredLightColorTheme;}
+  else {
     return;
   }
 
@@ -101,7 +102,7 @@ async function changeTerminalBackground() {
   if (currentBackground !== "#00000000") {
     const newColorCustomization = {
       ...currentColorCustomizations,
-      "terminal.background": "#00000000",
+      "terminal.background": "#00000000"
     };
 
     await vscode.workspace.getConfiguration().update("workbench.colorCustomizations", newColorCustomization, vscode.ConfigurationTarget.Global);
@@ -135,7 +136,7 @@ async function checkColorTheme() {
   const currentTheme = getCurrentTheme(vscode.workspace.getConfiguration("vscode_vibrancy"));
 
   // if theme is "Custom theme (use imports)", skip the check
-  if (currentTheme === "Custom theme (use imports)") {
+  if (currentTheme === 'Custom theme (use imports)') {
     return;
   }
 
@@ -145,12 +146,14 @@ async function checkColorTheme() {
 
   // Show a message to the user if the current color theme doesn't match the target theme
   if (targetTheme !== currentColorTheme) {
-    const message = localize("messages.recommendedColorTheme").replace("%1", currentColorTheme).replace("%2", targetTheme);
+    const message = localize('messages.recommendedColorTheme')
+      .replace('%1', currentColorTheme)
+      .replace('%2', targetTheme);
 
-    const result = await vscode.window.showInformationMessage(message, localize("messages.changeColorThemeIde"), localize("messages.noIde"));
+    const result = await vscode.window.showInformationMessage(message, localize('messages.changeColorThemeIde'), localize('messages.noIde'));
 
     // If the user chooses to change the color theme, update the configuration
-    if (result === localize("messages.changeColorThemeIde")) {
+    if (result === localize('messages.changeColorThemeIde')) {
       await vscode.workspace.getConfiguration().update("workbench.colorTheme", targetTheme, vscode.ConfigurationTarget.Global);
     }
   }
@@ -159,17 +162,29 @@ async function checkColorTheme() {
 // Electron 26 changed the available vibrancy types, this ensures that upgrading users switch
 async function checkElectronDeprecatedType() {
   let electronVersion = process.versions.electron;
-  let majorVersion = parseInt(electronVersion.split(".")[0]);
+  let majorVersion = parseInt(electronVersion.split('.')[0]);
 
   if (majorVersion > 25) {
     const currentType = vscode.workspace.getConfiguration("vscode_vibrancy").type;
-    const deprecatedTypes = ["appearance-based", "dark", "ultra-dark", "light", "medium-light"];
-
+    const deprecatedTypes = [
+      "appearance-based",
+      "dark",
+      "ultra-dark",
+      "light",
+      "medium-light"
+    ];
+  
     if (deprecatedTypes.includes(currentType)) {
-      vscode.window.showWarningMessage(localize("messages.electronDeprecatedType").replace("%1", currentType), { title: "Default" }, { title: "Transparent" }).then(async (msg) => {
+      vscode.window.showWarningMessage(
+        localize('messages.electronDeprecatedType').replace('%1', currentType),
+        { title: "Default" },
+        { title: "Transparent" }
+      ).then(async (msg) => {
         if (msg) {
           const newType = msg.title === "Default" ? "under-window" : "fullscreen-ui";
-          await vscode.workspace.getConfiguration("vscode_vibrancy").update("type", newType, vscode.ConfigurationTarget.Global);
+          await vscode.workspace
+            .getConfiguration("vscode_vibrancy")
+            .update("type", newType, vscode.ConfigurationTarget.Global);
         }
       });
     }
@@ -211,21 +226,21 @@ function deepEqual(obj1, obj2) {
 
 //check if value is primitive
 function isPrimitive(obj) {
-  return obj !== Object(obj);
+  return (obj !== Object(obj));
 }
 
 // Check if runtime and asset updates are necessary based on version numbers
 function checkRuntimeUpdate(current, last) {
   // Split the versions into major and minor numbers
-  const [currentMajor, currentMinor] = current.split(".").slice(0, 2);
-  const [lastMajor, lastMinor] = last.split(".").slice(0, 2);
+  const [currentMajor, currentMinor] = current.split('.').slice(0, 2);
+  const [lastMajor, lastMinor] = last.split('.').slice(0, 2);
 
   // Convert the numbers to integers and compare them
-  return parseInt(currentMajor) !== parseInt(lastMajor) || parseInt(currentMinor) !== parseInt(lastMinor);
+  return (parseInt(currentMajor) !== parseInt(lastMajor)) || (parseInt(currentMinor) !== parseInt(lastMinor));
 }
 
 function activate(context) {
-  console.log("vscode-vibrancy is active!");
+  console.log('vscode-vibrancy is active!');
 
   var appDir;
   try {
@@ -233,22 +248,30 @@ function activate(context) {
   } catch {
     appDir = _VSCODE_FILE_ROOT;
   }
+  let useEsmRuntime = false;
+  var JSFile = path.join(appDir, '/main.js');
+  var ElectronJSFile = path.join(appDir, '/vs/code/electron-main/main.js');
 
+  // VSC 1.95 merges these main.js files
+  if (!fs.existsSync(ElectronJSFile)) {
+    ElectronJSFile = JSFile;
+  }
+  
+  var runtimeVersion = 'v6';
+  var runtimeDir = path.join(appDir, '/vscode-vibrancy-runtime-' + runtimeVersion);
+  var runtimeSrcDir = "../runtime-pre-esm"
+  
   // VSC 1.94 and forward use Esm path
-  const workbenchHtmlPath = path.join(appDir, "vs/code/electron-sandbox/workbench/workbench.html");
-  const workbenchEsmHtmlPath = path.join(appDir, "vs/code/electron-sandbox/workbench/workbench.esm.html");
+  const workbenchHtmlPath = path.join(appDir, 'vs/code/electron-sandbox/workbench/workbench.html');
+  const workbenchEsmHtmlPath = path.join(appDir, 'vs/code/electron-sandbox/workbench/workbench.esm.html');
   var HTMLFile;
   if (fs.existsSync(workbenchHtmlPath)) {
-    HTMLFile = workbenchHtmlPath;
+      HTMLFile = workbenchHtmlPath;
   } else {
-    HTMLFile = workbenchEsmHtmlPath;
+      HTMLFile = workbenchEsmHtmlPath;
+      useEsmRuntime = true;
+      runtimeSrcDir = "../runtime"
   }
-
-  var JSFile = appDir + "/main.js";
-  var ElectronJSFile = appDir + "/vs/code/electron-main/main.js";
-
-  var runtimeVersion = "v6";
-  var runtimeDir = appDir + "/vscode-vibrancy-runtime-" + runtimeVersion;
 
   async function installRuntime() {
     // if runtimeDir exists, recurse through it and delete all files
@@ -257,7 +280,7 @@ function activate(context) {
     }
 
     await fs.mkdir(runtimeDir);
-    await fsExtra.copy(path.resolve(__dirname, "../runtime"), path.resolve(runtimeDir));
+    await fsExtra.copy(path.resolve(__dirname, runtimeSrcDir), path.resolve(runtimeDir));
   }
 
   async function installRuntimeWin() {
@@ -265,7 +288,7 @@ function activate(context) {
     // BUG: skip all .node files as they're locked by the VSCode process (#58)
     if (fs.existsSync(runtimeDir)) {
       fs.readdirSync(runtimeDir).forEach((file, index) => {
-        if (file.endsWith(".node")) {
+        if (file.endsWith('.node')) {
           return;
         }
 
@@ -281,23 +304,23 @@ function activate(context) {
       });
 
       // copy all files from runtime to runtimeDir, skipping .node files
-      fs.readdirSync(path.resolve(__dirname, "../runtime")).forEach((file, index) => {
-        if (file.endsWith(".node")) {
+      fs.readdirSync(path.resolve(__dirname, runtimeSrcDir)).forEach((file, index) => {
+        if (file.endsWith('.node')) {
           return;
         }
 
         // if file is a directory
-        if (fs.lstatSync(path.join(path.resolve(__dirname, "../runtime"), file)).isDirectory()) {
-          fsExtra.copySync(path.join(path.resolve(__dirname, "../runtime"), file), path.join(runtimeDir, file));
+        if (fs.lstatSync(path.join(path.resolve(__dirname, runtimeSrcDir), file)).isDirectory()) {
+          fsExtra.copySync(path.join(path.resolve(__dirname, runtimeSrcDir), file), path.join(runtimeDir, file));
           return;
         }
 
-        const curPath = path.join(path.resolve(__dirname, "../runtime"), file);
+        const curPath = path.join(path.resolve(__dirname, runtimeSrcDir), file);
         fs.copyFileSync(curPath, path.join(runtimeDir, file));
       });
     } else {
-      await fs.mkdir(runtimeDir).catch(() => {});
-      await fsExtra.copy(path.resolve(__dirname, "../runtime"), path.resolve(runtimeDir));
+      await fs.mkdir(runtimeDir).catch(() => { });
+      await fsExtra.copy(path.resolve(__dirname, runtimeSrcDir), path.resolve(runtimeDir));
     }
   }
 
@@ -307,11 +330,11 @@ function activate(context) {
     const themeConfigPath = path.resolve(__dirname, themeConfigPaths[currentTheme]);
     const themeConfig = require(themeConfigPath);
     const themeStylePath = path.join(__dirname, themeStylePaths[currentTheme]);
-    const themeCSS = await fs.readFile(themeStylePath, "utf-8");
-    const JS = await fs.readFile(JSFile, "utf-8");
-
+    const themeCSS = await fs.readFile(themeStylePath, 'utf-8');
+    const JS = await fs.readFile(JSFile, 'utf-8');
+  
     const imports = await generateImports(config);
-
+  
     const injectData = {
       os: os,
       config: config,
@@ -319,146 +342,158 @@ function activate(context) {
       themeCSS: themeCSS,
       imports: imports,
     };
-
+  
     const base = __filename;
     const newJS = generateNewJS(JS, base, injectData);
-
-    await fs.writeFile(JSFile, newJS, "utf-8");
+  
+    await fs.writeFile(JSFile, newJS, 'utf-8');
     await modifyElectronJSFile(ElectronJSFile);
   }
-
+  
   async function generateImports(config) {
     const imports = {
       css: "",
       js: "",
     };
-
+  
     for (let i = 0; i < config.imports.length; i++) {
       if (config.imports[i] === "/path/to/file") continue;
-
+  
       try {
-        const importContent = await fs.readFile(config.imports[i], "utf-8");
-
-        if (config.imports[i].endsWith(".css")) {
+        const importContent = await fs.readFile(config.imports[i], 'utf-8');
+  
+        if (config.imports[i].endsWith('.css')) {
           imports.css += `<style>${importContent}</style>`;
         } else {
           imports.js += `<script>${importContent}</script>`;
         }
       } catch (err) {
-        vscode.window.showWarningMessage(localize("messages.importError").replace("%1", config.imports[i]));
-      }
+          vscode.window.showWarningMessage(localize('messages.importError').replace('%1', config.imports[i]));
+        }
     }
-
+  
     return imports;
   }
-
+  
   function generateNewJS(JS, base, injectData) {
-    const newJS =
-      JS.replace(/\n\/\* !! VSCODE-VIBRANCY-START !! \*\/[\s\S]*?\/\* !! VSCODE-VIBRANCY-END !! \*\//, "") +
-      "\n/* !! VSCODE-VIBRANCY-START !! */\n;(function(){\n" +
-      `if (!import('fs').then(fs => fs.existsSync(${JSON.stringify(base)}))) return;\n` +
-      `global.vscode_vibrancy_plugin = ${JSON.stringify(injectData)}; try{ import(${JSON.stringify(runtimeDir)} + "/index.mjs"); } catch (err) {console.error(err)}\n` +
-      "})()\n/* !! VSCODE-VIBRANCY-END !! */";
+    let runtimePath;
+    if (useEsmRuntime) {
+      runtimePath = path.join(runtimeDir, "index.mjs")
+    } else {
+      runtimePath = path.join(runtimeDir, "index.cjs")
+    }
 
+    const newJS = JS.replace(/\n\/\* !! VSCODE-VIBRANCY-START !! \*\/[\s\S]*?\/\* !! VSCODE-VIBRANCY-END !! \*\//, '')
+      + '\n/* !! VSCODE-VIBRANCY-START !! */\n;(function(){\n'
+      + `if (!import('fs').then(fs => fs.existsSync(${JSON.stringify(base)}))) return;\n`
+      + `global.vscode_vibrancy_plugin = ${JSON.stringify(injectData)}; try{ import("${pathToFileURL(runtimePath)}"); } catch (err) {console.error(err)}\n`
+      + '})()\n/* !! VSCODE-VIBRANCY-END !! */';
+  
     return newJS;
   }
-
+  
   // BrowserWindow option modification
   async function modifyElectronJSFile(ElectronJSFile) {
-    let ElectronJS = await fs.readFile(ElectronJSFile, "utf-8");
-
+    let ElectronJS = await fs.readFile(ElectronJSFile, 'utf-8');
+  
     // add visualEffectState option to enable vibrancy while VSCode is not in focus (macOS only)
-    if (!ElectronJS.includes("visualEffectState")) {
+    if (!ElectronJS.includes('visualEffectState')) {
       ElectronJS = ElectronJS.replace(/experimentalDarkMode/g, 'visualEffectState:"active",experimentalDarkMode');
     }
 
     // enable frameless window on Windows w/ Electron 27 (bug #122)
-    const electronMajorVersion = parseInt(process.versions.electron.split(".")[0]);
-    if (!ElectronJS.includes("frame:false,") && process.platform === "win32" && electronMajorVersion >= 27) {
-      ElectronJS = ElectronJS.replace(/experimentalDarkMode/g, "frame:false,transparent:true,experimentalDarkMode");
+    const electronMajorVersion = parseInt(process.versions.electron.split('.')[0]);
+    if (!ElectronJS.includes('frame:false,') && process.platform === 'win32' && electronMajorVersion >= 27) {
+      ElectronJS = ElectronJS.replace(/experimentalDarkMode/g, 'frame:false,transparent:true,experimentalDarkMode');
     }
-
-    await fs.writeFile(ElectronJSFile, ElectronJS, "utf-8");
+  
+    await fs.writeFile(ElectronJSFile, ElectronJS, 'utf-8');
   }
-
+  
   async function installHTML() {
-    const HTML = await fs.readFile(HTMLFile, "utf-8");
+    const HTML = await fs.readFile(HTMLFile, 'utf-8');
 
     const metaTagRegex = /<meta\s+http-equiv="Content-Security-Policy"\s+content="([\s\S]+?)">/;
     const trustedTypesRegex = /(trusted-types)(\r\n|\r|\n)/;
-
+  
     const metaTagMatch = HTML.match(metaTagRegex);
-
+  
     if (metaTagMatch) {
       const currentContent = metaTagMatch[0];
 
       const newContent = currentContent.replace(trustedTypesRegex, "$1 VscodeVibrancy\n");
-
+  
       newHTML = HTML.replace(metaTagRegex, newContent);
     }
 
     try {
       if (HTML !== newHTML) {
-        await fs.writeFile(HTMLFile, newHTML, "utf-8");
+        await fs.writeFile(HTMLFile, newHTML, 'utf-8');
       }
     } catch (ReferenceError) {
-      throw localize("messages.htmlError");
+      throw localize('messages.htmlError');
     }
   }
 
   async function uninstallJS() {
-    const JS = await fs.readFile(JSFile, "utf-8");
+    const JS = await fs.readFile(JSFile, 'utf-8');
     const needClean = /\n\/\* !! VSCODE-VIBRANCY-START !! \*\/[\s\S]*?\/\* !! VSCODE-VIBRANCY-END !! \*\//.test(JS);
     if (needClean) {
-      const newJS = JS.replace(/\n\/\* !! VSCODE-VIBRANCY-START !! \*\/[\s\S]*?\/\* !! VSCODE-VIBRANCY-END !! \*\//, "");
-      await fs.writeFile(JSFile, newJS, "utf-8");
+      const newJS = JS
+        .replace(/\n\/\* !! VSCODE-VIBRANCY-START !! \*\/[\s\S]*?\/\* !! VSCODE-VIBRANCY-END !! \*\//, '')
+      await fs.writeFile(JSFile, newJS, 'utf-8');
     }
     // remove visualEffectState option
-    const ElectronJS = await fs.readFile(ElectronJSFile, "utf-8");
-    const newElectronJS = ElectronJS.replace(/frame:false,transparent:true,experimentalDarkMode/g, "experimentalDarkMode").replace(/visualEffectState:"active",experimentalDarkMode/g, "experimentalDarkMode");
-    await fs.writeFile(ElectronJSFile, newElectronJS, "utf-8");
+    const ElectronJS = await fs.readFile(ElectronJSFile, 'utf-8');
+    const newElectronJS = ElectronJS
+      .replace(/frame:false,transparent:true,experimentalDarkMode/g, 'experimentalDarkMode')
+      .replace(/visualEffectState:"active",experimentalDarkMode/g, 'experimentalDarkMode');
+    await fs.writeFile(ElectronJSFile, newElectronJS, 'utf-8');
   }
 
   async function uninstallHTML() {
-    const HTML = await fs.readFile(HTMLFile, "utf-8");
+    const HTML = await fs.readFile(HTMLFile, 'utf-8');
     const needClean = /trusted-types VscodeVibrancy/.test(HTML);
     if (needClean) {
       const newHTML = HTML.replace(/trusted-types VscodeVibrancy(\r\n|\r|\n)/, "trusted-types$1");
-      await fs.writeFile(HTMLFile, newHTML, "utf-8");
+      await fs.writeFile(HTMLFile, newHTML, 'utf-8');
     }
   }
 
   function enabledRestart() {
-    vscode.window.showInformationMessage(localize("messages.enabled"), { title: localize("messages.restartIde") }).then(function (msg) {
-      msg && promptRestart();
-    });
+    vscode.window.showInformationMessage(localize('messages.enabled'), { title: localize('messages.restartIde') })
+      .then(function (msg) {
+        msg && promptRestart();
+      });
   }
 
   function disabledRestart() {
-    vscode.window.showInformationMessage(localize("messages.disabled"), { title: localize("messages.restartIde") }).then(function (msg) {
-      msg && promptRestart();
-    });
+    vscode.window.showInformationMessage(localize('messages.disabled'), { title: localize('messages.restartIde') })
+      .then(function (msg) {
+        msg && promptRestart();
+      });
   }
 
   // ####  main commands ######################################################
 
   async function Install() {
-    if (os === "unknown") {
-      vscode.window.showInformationMessage(localize("messages.unsupported"));
-      throw new Error("unsupported");
+
+    if (os === 'unknown') {
+      vscode.window.showInformationMessage(localize('messages.unsupported'));
+      throw new Error('unsupported');
     }
 
     // BUG: prevent installation on ARM Windows (#9)
-    if (process.arch.startsWith("arm") && process.platform === "win32") {
-      vscode.window.showInformationMessage(localize("messages.unsupported"));
-      throw new Error("unsupported");
+    if (process.arch.startsWith("arm") && process.platform === 'win32') {
+      vscode.window.showInformationMessage(localize('messages.unsupported'));
+      throw new Error('unsupported');
     }
 
     try {
       await fs.stat(JSFile);
       await fs.stat(HTMLFile);
 
-      if (os === "win10") {
+      if (os === 'win10') {
         await installRuntimeWin();
       } else {
         await installRuntime();
@@ -468,10 +503,11 @@ function activate(context) {
       await changeTerminalRendererType();
       await changeTerminalBackground();
     } catch (error) {
-      if (error && (error.code === "EPERM" || error.code === "EACCES")) {
-        vscode.window.showInformationMessage(localize("messages.admin") + error);
-      } else {
-        vscode.window.showInformationMessage(localize("messages.smthingwrong") + error);
+      if (error && (error.code === 'EPERM' || error.code === 'EACCES')) {
+        vscode.window.showInformationMessage(localize('messages.admin') + error);
+      }
+      else {
+        vscode.window.showInformationMessage(localize('messages.smthingwrong') + error);
       }
       throw error;
     }
@@ -483,6 +519,7 @@ function activate(context) {
       await fs.stat(HTMLFile);
       await uninstallHTML();
     } finally {
+
     }
 
     try {
@@ -490,10 +527,11 @@ function activate(context) {
 
       await uninstallJS();
     } catch (error) {
-      if (error && (error.code === "EPERM" || error.code === "EACCES")) {
-        vscode.window.showInformationMessage(localize("messages.admin") + error);
-      } else {
-        vscode.window.showInformationMessage(localize("messages.smthingwrong") + error);
+      if (error && (error.code === 'EPERM' || error.code === 'EACCES')) {
+        vscode.window.showInformationMessage(localize('messages.admin') + error);
+      }
+      else {
+        vscode.window.showInformationMessage(localize('messages.smthingwrong') + error);
       }
       throw error;
     }
@@ -504,15 +542,15 @@ function activate(context) {
     await Install();
   }
 
-  var installVibrancy = vscode.commands.registerCommand("extension.installVibrancy", async () => {
+  var installVibrancy = vscode.commands.registerCommand('extension.installVibrancy', async () => {
     await Install();
     enabledRestart();
   });
-  var uninstallVibrancy = vscode.commands.registerCommand("extension.uninstallVibrancy", async () => {
-    await Uninstall();
+  var uninstallVibrancy = vscode.commands.registerCommand('extension.uninstallVibrancy', async () => {
+    await Uninstall()
     disabledRestart();
   });
-  var updateVibrancy = vscode.commands.registerCommand("extension.updateVibrancy", async () => {
+  var updateVibrancy = vscode.commands.registerCommand('extension.updateVibrancy', async () => {
     await Update();
     enabledRestart();
   });
@@ -522,27 +560,28 @@ function activate(context) {
   context.subscriptions.push(updateVibrancy);
 
   const currentVersion = context.extension.packageJSON.version;
-  let lastVersion = context.globalState.get("lastVersion");
-  let updateMsg = "messages.updateNeeded";
+  let lastVersion = context.globalState.get('lastVersion');
+  let updateMsg = "messages.updateNeeded"
 
   // Detect first time install
   if (!lastVersion) {
-    lastVersion = "0.0.0";
-    updateMsg = "messages.firstload";
+    lastVersion = '0.0.0';
+    updateMsg = "messages.firstload"
   }
 
   // Check if the current version is a minor update from the last version
   if (checkRuntimeUpdate(currentVersion, lastVersion)) {
-    vscode.window.showInformationMessage(localize(updateMsg), { title: localize("messages.installIde") }).then(async (msg) => {
-      if (msg) {
-        await Update();
-        await checkColorTheme();
-        await checkElectronDeprecatedType();
-        enabledRestart();
-      }
-    });
+    vscode.window.showInformationMessage(localize(updateMsg), { title: localize('messages.installIde') })
+      .then(async (msg) => {
+        if (msg) {
+          await Update();
+          await checkColorTheme();
+          await checkElectronDeprecatedType();
+          enabledRestart();
+        }
+      });
     // Update the global state with the current version
-    context.globalState.update("lastVersion", currentVersion);
+    context.globalState.update('lastVersion', currentVersion);
   }
 
   // Check type compatibility with current Electron
@@ -557,27 +596,28 @@ function activate(context) {
     newConfig = vscode.workspace.getConfiguration("vscode_vibrancy");
     if (!deepEqual(lastConfig, newConfig)) {
       lastConfig = newConfig;
-      vscode.window.showInformationMessage(localize("messages.configupdate"), { title: localize("messages.reloadIde") }).then(async (msg) => {
-        await checkElectronDeprecatedType();
-        if (msg) {
-          await Update();
-          // if (newConfig.theme !== vscode.workspace.getConfiguration("vscode_vibrancy")) {
-          //   await checkColorTheme();
-          // }
-          enabledRestart();
-        }
-      });
-      context.globalState.update("lastVersion", currentVersion);
-    }
+      vscode.window.showInformationMessage(localize('messages.configupdate'), { title: localize('messages.reloadIde') })
+      .then(async (msg) => {
+          await checkElectronDeprecatedType();
+          if (msg) {
+            await Update();
+            // if (newConfig.theme !== vscode.workspace.getConfiguration("vscode_vibrancy")) {
+            //   await checkColorTheme();
+            // }
+            enabledRestart();
+          }
+        });
+      context.globalState.update('lastVersion', currentVersion);
+      }
   });
-
-  checkDarkLightMode(vscode.window.activeColorTheme);
+  
+  checkDarkLightMode(vscode.window.activeColorTheme)
   vscode.window.onDidChangeActiveColorTheme((theme) => {
-    checkDarkLightMode(theme);
+    checkDarkLightMode(theme)
   });
 }
 exports.activate = activate;
 
 // this method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() { }
 exports.deactivate = deactivate;

@@ -2,7 +2,7 @@
   "name": "glass-theme-doyle",
   "displayName": "Glassmorphism Theme MacOS",
   "description": "Glassmorphism Effect for Visual Studio Code",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "publisher": "KrautGTI",
   "author": {
     "email": "tylerjamesdoyle@gmail.com",
@@ -26,7 +26,21 @@
     "ui",
     "design",
     "aesthetic",
-    "blur"
+    "blur",
+    "vibrancy",
+    "macos-theme",
+    "macos-ui",
+    "glass",
+    "frosted-glass",
+    "frosted",
+    "glass-theme",
+    "windows",
+    "windows-theme",
+    "windows-ui",
+    "vscode_vibrancy",
+    "vibrancy",
+    "vscode-glass-theme",
+    "glass ui"
   ],
   "repository": {
     "type": "git",

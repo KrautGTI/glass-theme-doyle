@@ -1,6 +1,6 @@
-import displayConfig from './displayconfig.mjs';
-import electron from 'electron';
-import process from 'process';
+const { VerticalRefreshRateContext } = require('./displayconfig.cjs')
+const electron = require('electron')
+const process = require('process')
 
 function sleep(duration) {
 	return new Promise(resolve => setTimeout(resolve, duration));
@@ -52,12 +52,12 @@ function isInSnapZone() {
  * It handles multiple displays with varying vertical sync rates,
  * and changes to the display configuration while this process is running.
  */
-export default function win10refresh(win, maximumRefreshRate) {
+module.exports = function win10refresh(win, maximumRefreshRate) {
 	if (!('__electron_acrylic_window__' in win)) {
 		win.__electron_acrylic_window__ = {};
 	}
 
-	const refreshCtx = new displayConfig.VerticalRefreshRateContext()
+	const refreshCtx = new VerticalRefreshRateContext()
 
 	function getRefreshRateAtCursor(cursor) {
 		cursor = cursor || electron.screen.getCursorScreenPoint()

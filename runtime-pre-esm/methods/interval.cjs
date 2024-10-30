@@ -19,7 +19,7 @@
  */
 const app = global.vscode_vibrancy_plugin;
 let backgroundColorTimer;
-export default window => ({
+module.exports = (window) => ({
 	install() {
 		clearInterval(backgroundColorTimer);
 		// https://github.com/microsoft/vscode/blob/9f8431f7fccf7a048531043eb6b6d24819482781/src/vs/platform/theme/electron-main/themeMainService.ts#L80
@@ -30,4 +30,4 @@ export default window => ({
 	uninstall() {
 		clearInterval(backgroundColorTimer);
 	}
-});
+})
