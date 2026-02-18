@@ -262,15 +262,30 @@ function activate(context) {
   var runtimeSrcDir = "../runtime-pre-esm"
   
   // VSC 1.94 and forward use Esm path
-  const workbenchHtmlPath = path.join(appDir, 'vs/code/electron-sandbox/workbench/workbench.html');
-  const workbenchEsmHtmlPath = path.join(appDir, 'vs/code/electron-sandbox/workbench/workbench.esm.html');
+  const possibleHtmlPaths = [
+    { path: 'vs/code/electron-sandbox/workbench/workbench.html', esm: false },
+    { path: 'vs/code/electron-browser/workbench/workbench.html', esm: false },
+    { path: 'vs/code/electron-sandbox/workbench/workbench.esm.html', esm: true },
+    { path: 'vs/code/electron-browser/workbench/workbench.esm.html', esm: true }
+  ];
+
   var HTMLFile;
-  if (fs.existsSync(workbenchHtmlPath)) {
-      HTMLFile = workbenchHtmlPath;
-  } else {
-      HTMLFile = workbenchEsmHtmlPath;
-      useEsmRuntime = true;
-      runtimeSrcDir = "../runtime"
+  for (const p of possibleHtmlPaths) {
+    const fullPath = path.join(appDir, p.path);
+    if (fs.existsSync(fullPath)) {
+      HTMLFile = fullPath;
+      if (p.esm) {
+        useEsmRuntime = true;
+        runtimeSrcDir = "../runtime";
+      }
+      break;
+    }
+  }
+
+  if (!HTMLFile) {
+    HTMLFile = path.join(appDir, 'vs/code/electron-sandbox/workbench/workbench.esm.html');
+    useEsmRuntime = true;
+    runtimeSrcDir = "../runtime"
   }
 
   async function installRuntime() {
